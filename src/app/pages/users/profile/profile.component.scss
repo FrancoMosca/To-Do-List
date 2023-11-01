@@ -1,0 +1,16 @@
+@media (max-width: 768px) {
+    .sidebar-slider {
+        transform: translateX(-100%);
+        transition: ease-in-out 300ms transform;
+        visibility: hidden;
+    }
+    
+    .sidebar-slider.sidebar-slide-in {
+        transform: translateX(0%);
+        transition: ease-in-out 600ms transform;
+        width: 33.333333%;
+        visibility: visible;
+    }
+
+}
+

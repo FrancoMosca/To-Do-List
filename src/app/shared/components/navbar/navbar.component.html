@@ -1,0 +1,29 @@
+<header class="navbar rounded-lg">
+	<div class="navbar-start">
+		<a routerLink="/home" class="navbar-item text-2xl font-poppins font-bold underline decoration-purple-700">NUCOF</a>
+	</div>
+  <div class="navbar-end">
+    <ng-container *ngIf="user$ | async as user; else showLinks">
+      <div class="avatar avatar-ring avatar-md">
+        <div class="dropdown-container">
+          <div class="dropdown">
+            <label class="btn btn-ghost flex cursor-pointer px-0" tabindex="0">
+              <img [attr.src]="user.photoURL ? user.photoURL : '../../../../assets/unknown_user.jpg'" alt="avatar" />
+            </label>
+            <div class="dropdown-menu dropdown-menu-bottom-left">
+              <p class="dropdown-item hover:bg-transparent text-sm">{{user.email}}</p>
+              <a routerLink="user/profile" class="dropdown-item text-sm">Profile</a>
+              <a routerLink="user/sign-in" tabindex="-1" class="dropdown-item text-sm" (click)="onSignOut()">Sign Out</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+    <ng-template #showLinks>
+      <nav class="flex flex-row h-full items-center justify-center">
+        <button routerLink="user/sign-in" type="button" class="text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br shadow-lg shadow-purple-500/50 dark:shadow-lg dark:shadow-purple-800/80 font-medium rounded-lg text-sm px-6 py-2.5 text-center mr-2">Sign In</button>
+        <button routerLink="user/sign-up" type="button" class="text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br shadow-lg shadow-purple-500/50 dark:shadow-lg dark:shadow-purple-800/80 font-medium rounded-lg text-sm px-6 py-2.5 text-center mr-2">Sign Up</button>
+      </nav>
+    </ng-template>
+  </div>
+</header>
