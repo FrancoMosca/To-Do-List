@@ -1,16 +1,14 @@
 // Importamos las dependencias necesarias
-import { Injectable, inject } from '@angular/core';
-import { Firestore, addDoc, collection, doc, getDoc, getDocs, setDoc, updateDoc } from '@angular/fire/firestore';
+import { Injectable } from '@angular/core';
+import { Firestore, collection, doc, getDoc, getDocs, setDoc, updateDoc } from '@angular/fire/firestore';
 
 // Usamos el decorador Injectable para indicar que este servicio puede ser inyectado en otros componentes o servicios
 @Injectable({
   providedIn: 'root'  // Indica que este servicio está disponible en toda la aplicación
 })
 export class StoreService {
-  // Definimos una variable miembro privada para el almacén de Firestore
-  private readonly store = inject(Firestore);
   
-  constructor() { }
+  constructor(private store: Firestore) { }
 
   // Método para agregar un documento a una colección específica
   async addDocument(collectionName: string, data: any, id?: string): Promise<void> {
@@ -31,6 +29,7 @@ export class StoreService {
       console.log(newData);
       // Actualizamos el documento con los nuevos datos
       await updateDoc(docRef, newData);
+      console.log(docRef)
       console.log('Documento actualizado exitosamente', 'Acción exitosa');
     } catch (error) {
       console.error('Error al actualizar el documento: ' + error, 'Error');

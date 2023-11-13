@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { AuthService } from '@app/pages/users/services/auth.service';
@@ -14,12 +14,12 @@ import { User } from 'firebase/auth';
 })
 export class NavbarComponent {
   user$!:Observable<User | null>;
-  private readonly authSvc = inject(AuthService);
 
-  constructor() {
-    this.user$ = this.authSvc.userState$;
+  constructor(private auth: AuthService) {
+    this.user$ = this.auth.userState$;
   }
+
   async onSignOut(): Promise<void> {
-    await this.authSvc.signOut();
+    await this.auth.signOut();
   }
 }

@@ -1,9 +1,7 @@
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { TasksService } from './services/tasks.service';
-import { Task } from './components/task/models/Task';
 import { AuthService } from '../users/services/auth.service';
-import { Observable } from 'rxjs';
-import { User } from '@angular/fire/auth';
+import { Task } from './components/task/models/Task';
 
 @Component({
   selector: 'app-home',
@@ -11,28 +9,17 @@ import { User } from '@angular/fire/auth';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent {
-  user$!:Observable<User | null>;
-  tasks: Task[] = [];
-  private readonly authSvc = inject(AuthService);
-  private readonly taskSvc = inject(TasksService);
 
+  task1: Task = {
+    description: "comprar tomate",
+    active: true
+  }
 
-  ngOnInit(){
-    this.user$ = this.authSvc.userState$;
-    this.user$.subscribe(async user => {
-      if (user) {
-        this.tasks = await this.getTasks(user);
-      }
+  tasks: Task [] = []
+  constructor(public auth:AuthService ,public task:TasksService){
+    this.task.tasks.subscribe((tasks: Task[]) => {
+      this.tasks = tasks;
     });
   }
 
-  async getTasks(user: User): Promise<Task[]>{
-    console.log(user)
-    console.log(this.taskSvc.getUserTasks(user))
-    return this.taskSvc.getUserTasks(user);
-  }
-
-  async addTask(){
-    
-  }
 }

@@ -10,6 +10,8 @@ import { TasksService } from '../../services/tasks.service';
 export class TaskComponent{
   @Input() task!: Task;
 
-  public readonly taskSvc = inject(TasksService);
+  constructor(public taskSvc: TasksService){
+
+  }
 
 }

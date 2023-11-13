@@ -1,11 +1,10 @@
 <main class="h-screen w-full flex flex-col items-center bg-[conic-gradient(at_top_right,_var(--tw-gradient-stops))] from-slate-900 via-purple-900 to-slate-900">
     <section class="flex flex-col items-center justify-center w-1/2">
-
         <div class="flex flex-col items-center justify-center w-full py-10">
             <h1 class="py-5 text-5xl font-poppins font-extrabold">To Do</h1>
             <app-search-bar class="py-5 w-full"></app-search-bar>
         </div>
-        <div (click)="addTask()" class="bg-purple-700 rounded-full p-3 cursor-pointer hover:bg-purple-900">
+        <div (click)="task.addTask(auth.userId!, task1)" class="bg-purple-700 rounded-full p-3 cursor-pointer hover:bg-purple-900">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
             </svg>

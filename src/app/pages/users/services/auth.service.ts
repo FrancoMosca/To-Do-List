@@ -1,7 +1,8 @@
 import { Auth, authState, createUserWithEmailAndPassword, GoogleAuthProvider, onAuthStateChanged, sendEmailVerification, sendPasswordResetEmail, signInWithEmailAndPassword, signInWithPopup, User, UserCredential } from '@angular/fire/auth';
-import { inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { StoreService } from '@app/shared/services/store.service';
+import { Observable } from 'rxjs';
 
 interface ErrorResponse {
   code: string;
@@ -11,11 +12,21 @@ interface ErrorResponse {
   providedIn: 'root',
 })
 export class AuthService {
-  private readonly auth = inject(Auth);
-  private readonly router = inject(Router);
   private readonly googleProvider = new GoogleAuthProvider();
+  user$!:Observable<User | null>;
+  userId?: string;
 
-  constructor(private _storeService: StoreService) {
+  constructor(
+              private auth:Auth,
+              private router: Router,
+              private store:StoreService
+              ){
+    this.user$ = this.userState$;
+    this.userState$.subscribe(async user => {
+      if (user) {
+        this.userId = user.uid;
+      }
+    });
   }
 
   get userState$() {
@@ -27,11 +38,11 @@ export class AuthService {
       await signInWithPopup(this.auth, this.googleProvider);
       onAuthStateChanged(this.auth, async (user: User | null) => {
         if (user) {
-          const userExists = await this._storeService.documentExists('users', user.uid);
+          const userExists = await this.store.documentExists('users', user.uid);
   
           if (!userExists) {
             // si el usuario no existe en la colección 'users', lo agregamos
-            await this._storeService.addDocument('users', {
+            await this.store.addDocument('users', {
               uid: user.uid,
               displayName: user.displayName,
               email: user.email,
@@ -40,6 +51,7 @@ export class AuthService {
           }
         }
       });
+      this.router.navigate(['/home']);
     } catch (error) {
       console.log('Google login', error);
     }
